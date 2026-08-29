@@ -23,7 +23,7 @@ export class TodoController {
 
     todo
       ? res.json(todo)
-      : res.status(400).json({ error: `TODO with id ${id} not found` });
+      : res.status(404).json({ error: `TODO with id ${id} not found` });
   };
 
   public createTodo = (req: Request, res: Response) => {
