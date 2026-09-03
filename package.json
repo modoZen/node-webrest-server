@@ -5,8 +5,9 @@
   "main": "index.js",
   "scripts": {
     "dev": "tsx watch src/app.ts",
-    "build": "rimraf ./dist && tsc",
-    "start": "npm run build && node dist/src/app.js"
+    "build": "rimraf ./dist && prisma generate && tsc",
+    "prisma:migrate:prod": "prisma migrate deploy",
+    "start": "prisma migrate deploy && node dist/src/app.js"
   },
   "keywords": [],
   "author": "",
