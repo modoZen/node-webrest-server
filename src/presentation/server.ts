@@ -13,6 +13,7 @@ export class Server {
   private readonly routes: Router;
 
   public readonly app = express();
+  private serverListener?: any;
 
   constructor(options: Options) {
     const { PORT, PUBLIC_PATH = "public", routes } = options;
@@ -42,8 +43,12 @@ export class Server {
       res.sendFile(indexPath);
     });
 
-    this.app.listen(this.port, () => {
+    this.serverListener = this.app.listen(this.port, () => {
       console.log(`Server running on port ${this.port}`);
     });
+  }
+
+  public close() {
+    this.serverListener?.close();
   }
 }

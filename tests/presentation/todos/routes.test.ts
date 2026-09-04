@@ -6,6 +6,10 @@ describe("Todo route testing", () => {
     await testServer.start();
   });
 
+  afterAll(() => {
+    testServer.close();
+  });
+
   test("should return TODOs api/todos", async () => {
     const response = await request(testServer.app)
       .get("/api/todos")
