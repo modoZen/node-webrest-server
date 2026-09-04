@@ -45,4 +45,16 @@ describe("Todo route testing", () => {
       completedAt: null,
     });
   });
+
+  it("should return a 404 NotFound api/todos/:id", async () => {
+    const todoId = 999;
+
+    const { body } = await request(testServer.app)
+      .get(`/api/todos/${todoId}`)
+      .expect(400);
+
+    console.log(body);
+
+    expect(body).toEqual({ error: `Todo with id ${todoId} not found` });
+  });
 });
