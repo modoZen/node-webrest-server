@@ -4,6 +4,7 @@
 keys/
 postgres/
 
+
 ### Node ###
 # Logs
 logs
@@ -83,6 +84,7 @@ web_modules/
 .env
 .env.development.local
 .env.test.local
+.env.test
 .env.production.local
 .env.local
 

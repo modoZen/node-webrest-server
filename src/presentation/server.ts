@@ -12,7 +12,7 @@ export class Server {
   private readonly publicPath;
   private readonly routes: Router;
 
-  private app = express();
+  public readonly app = express();
 
   constructor(options: Options) {
     const { PORT, PUBLIC_PATH = "public", routes } = options;
