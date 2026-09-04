@@ -1,5 +1,6 @@
 import request from "supertest";
 import { testServer } from "../../test-server.js";
+import { prisma } from "../../../src/lib/prisma.js";
 
 describe("Todo route testing", () => {
   beforeAll(async () => {
@@ -10,11 +11,21 @@ describe("Todo route testing", () => {
     testServer.close();
   });
 
+  const todo1 = { text: "Hola Mundo 1" };
+  const todo2 = { text: "Hola Mundo 2" };
+
   test("should return TODOs api/todos", async () => {
-    const response = await request(testServer.app)
+    await prisma.todo.deleteMany();
+    await prisma.todo.createMany({ data: [todo1, todo2] });
+
+    const { body } = await request(testServer.app)
       .get("/api/todos")
       .expect(200);
 
-    // console.log(response.body);
+    expect(body).toBeInstanceOf(Array);
+    expect(body.length).toBe(2);
+    expect(body[0].text).toBe(todo1.text);
+    expect(body[1].text).toBe(todo2.text);
+    expect(body[0].completedAt).toBeNull();
   });
 });

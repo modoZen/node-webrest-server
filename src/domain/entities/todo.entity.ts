@@ -15,7 +15,7 @@ export class TodoEntity {
     if (!id) throw new Error("id is required");
     if (!text) throw new Error("text is required");
 
-    let newCompletedAt;
+    let newCompletedAt: Date | null = null;
 
     if (completedAt) {
       newCompletedAt = new Date(completedAt);
