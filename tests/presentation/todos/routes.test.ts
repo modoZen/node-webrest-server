@@ -1,6 +1,7 @@
 import request from "supertest";
 import { testServer } from "../../test-server.js";
 import { prisma } from "../../../src/lib/prisma.js";
+import { text } from "node:stream/consumers";
 
 describe("Todo route testing", () => {
   beforeAll(async () => {
@@ -53,8 +54,37 @@ describe("Todo route testing", () => {
       .get(`/api/todos/${todoId}`)
       .expect(400);
 
-    console.log(body);
-
     expect(body).toEqual({ error: `Todo with id ${todoId} not found` });
+  });
+
+  it("should return a new Todo api/todos", async () => {
+    const response = await request(testServer.app)
+      .post("/api/todos")
+      .send(todo1)
+      .expect(201);
+
+    expect(response.body).toEqual({
+      id: expect.any(Number),
+      text: todo1.text,
+      completedAt: null,
+    });
+  });
+
+  it("should return an error if text is not valid api/todos", async () => {
+    const { body } = await request(testServer.app)
+      .post("/api/todos")
+      .send({})
+      .expect(400);
+
+    expect(body).toEqual({ error: "Text property is required" });
+  });
+
+  it("should return an error if text is empty", async () => {
+    const { body } = await request(testServer.app)
+      .post("/api/todos")
+      .send({ text: "  " })
+      .expect(400);
+
+    expect(body).toEqual({ error: "Text property is required" });
   });
 });
